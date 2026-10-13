@@ -16,8 +16,7 @@ Analyse du marché immobilier de l'Essonne (91) à partir des données publiques
 ## Principaux résultats (2025)
 - 43 662 lignes, mais **17 625 ventes réelles** : une vente peut occuper plusieurs lignes
 - Prix médian d'une **maison** : **320 000 €** ; d'un **appartement** : **177 000 €**
-- Les communes les plus chères au m² sont au nord du département (Igny, Bièvres, Verrières-le-Buisson, plateau de Saclay)
-- Les moins chères : sud rural (Pussay, Angerville, Étampes) et certaines villes urbaines (Grigny, Ris-Orangis)
+-- Classement des communes par prix au m² : **en cours de correction**. Biais détecté : certaines ventes regroupent des dizaines de logements (ex. 2 ventes de 80 logements à Igny), ce qui gonfle artificiellement le prix au m².
 
 ## Reproduire l'analyse
 ```bash
