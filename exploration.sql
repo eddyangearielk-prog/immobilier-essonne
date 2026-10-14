@@ -66,3 +66,4 @@ GROUP BY nom_commune
 HAVING COUNT(DISTINCT id_mutation) >= 30
 ORDER BY prix_m2_median ASC
 LIMIT 10;
+

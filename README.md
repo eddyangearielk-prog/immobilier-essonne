@@ -3,31 +3,45 @@
 Analyse du marché immobilier de l'Essonne (91) à partir des données publiques
 **DVF** (Demandes de Valeurs Foncières) publiées par la DGFiP sur data.gouv.fr.
 
+![Tableau de bord Power BI](images/dashboard.png)
+
 ## Outils
-- **DuckDB** : moteur SQL analytique
-- **SQL** : exploration, nettoyage et agrégations
-- **Linux (WSL2)**, **VS Code**, **Git**
+- **DuckDB** et **SQL** : ingestion, contrôles qualité, agrégations (CTE)
+- **Power BI** : tableau de bord interactif, mesures DAX, thème personnalisé
+- **Linux (WSL2)**, **VS Code**, **Git / GitHub**
 
 ## Démarche
-1. Ingestion du fichier officiel DVF 2025 de l'Essonne
-2. Contrôles qualité : couverture temporelle, structure des données
-3. Analyse : prix médians et prix au m² par commune
+1. **Ingestion** du fichier officiel DVF 2025 de l'Essonne
+2. **Contrôles qualité** : couverture temporelle, structure des données, valeurs aberrantes
+3. **Correction d'un biais** : certaines ventes regroupent des dizaines de logements
+   (ex. 2 ventes de 80 logements à Igny), ce qui gonflait le prix au m² (12 497 €/m² au lieu de 4 620 €/m²).
+   Correction avec une CTE : une ligne par vente, ventes d'un seul logement uniquement.
+4. **Export** des résultats en CSV et **visualisation** dans Power BI
 
 ## Principaux résultats (2025)
 - 43 662 lignes, mais **17 625 ventes réelles** : une vente peut occuper plusieurs lignes
-- Prix médian d'une **maison** : **320 000 €** ; d'un **appartement** : **177 000 €**
-- Classement des communes par prix au m² : **en cours de correction**. Biais détecté : certaines ventes regroupent des dizaines de logements (ex. 2 ventes de 80 logements à Igny), ce qui gonfle artificiellement le prix au m².
+- **11 614 ventes** d'un seul logement analysées dans **89 communes** (au moins 30 ventes chacune)
+- Prix médian au m² le plus élevé : **Verrières-le-Buisson (4 628 €/m²)**, suivie d'Igny, Saclay et Bièvres
+- Les communes les plus chères sont au nord du département, près de Paris et du plateau de Saclay
+
+## Fichiers du projet
+| Fichier | Rôle |
+|---|---|
+| `exploration.sql` | Exploration et contrôles qualité |
+| `correction.sql` | Prix au m² corrigé (CTE) |
+| `export.sql` | Export des résultats pour Power BI |
+| `resultats/prix_m2_communes.csv` | Résultats par commune |
+| `immobilier-essonne.pbix` | Tableau de bord Power BI |
+| `theme-bleu.json` | Thème Power BI personnalisé |
 
 ## Reproduire l'analyse
 ```bash
 mkdir -p data/raw
 wget -P data/raw https://files.data.gouv.fr/geo-dvf/latest/csv/2025/departements/91.csv.gz
-duckdb < exploration.sql
+duckdb < correction.sql
+duckdb < export.sql
 ```
-
-## Limites
-Le prix au m² est approximatif lorsqu'une même vente contient plusieurs logements.
-Amélioration prévue : dédoublonnage des ventes multi-biens.
+Puis ouvrir `immobilier-essonne.pbix` dans Power BI Desktop et cliquer sur **Actualiser**.
 
 ## Source
 Données : [DVF géolocalisées, data.gouv.fr](https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres-geolocalisees/), Licence Ouverte 2.0
