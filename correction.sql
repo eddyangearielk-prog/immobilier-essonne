@@ -1,5 +1,7 @@
 -- Prix au m² corrigé : une vente = une ligne, uniquement les ventes d'un seul logement
 -- (sans local commercial associé, et situées dans une seule commune)
+-- Prix aberrants exclus : moins de 500 €/m² (ventes à 1 €, cessions symboliques)
+-- ou plus de 15 000 €/m² (surface bâtie incohérente)
 
 -- ÉTAPE 1 (la CTE) : préparer un tableau avec une ligne par vente
 WITH ventes AS (
@@ -26,6 +28,7 @@ WHERE nb_logements = 1
   AND nb_locaux_activite = 0
   AND nb_communes = 1
   AND surface > 0
+  AND prix / surface BETWEEN 500 AND 15000
 GROUP BY nom_commune
 HAVING COUNT(*) >= 30
 ORDER BY prix_m2_median DESC

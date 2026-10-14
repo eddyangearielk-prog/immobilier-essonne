@@ -18,11 +18,13 @@ Analyse du marché immobilier de l'Essonne (91) à partir des données publiques
    Correction avec une CTE : une ligne par vente, ventes d'un seul logement uniquement.
    Sont aussi exclues les ventes mixtes (logement + local commercial, dont le prix couvre les deux)
    et les ventes portant sur plusieurs communes.
+   Les prix aberrants sont écartés : moins de 500 €/m² (ventes à 1 €, cessions symboliques)
+   ou plus de 15 000 €/m² (surface bâtie incohérente, ex. une maison de 4 m²).
 4. **Export** des résultats en CSV et **visualisation** dans Power BI
 
 ## Principaux résultats (2025)
 - 43 662 lignes, mais **17 625 ventes réelles** : une vente peut occuper plusieurs lignes
-- **11 444 ventes** d'un seul logement analysées dans **88 communes** (au moins 30 ventes chacune)
+- **11 410 ventes** d'un seul logement analysées dans **88 communes** (au moins 30 ventes chacune)
 - Prix médian au m² le plus élevé : **Verrières-le-Buisson (4 636 €/m²)**, suivie d'Igny, Saclay et Bièvres
 - Les communes les plus chères sont au nord du département, près de Paris et du plateau de Saclay
 

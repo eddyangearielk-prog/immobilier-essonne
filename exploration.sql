@@ -21,7 +21,8 @@ ORDER BY nb_lignes DESC;
 
 -- Les requêtes de prix ci-dessous travaillent sur une ligne par vente,
 -- en ne gardant que les ventes d'un seul logement (sans local commercial,
--- dans une seule commune), comme dans correction.sql.
+-- dans une seule commune) et à un prix cohérent (entre 500 et 15 000 €/m²),
+-- comme dans correction.sql.
 
 -- Prix médian d'une maison et d'un appartement en Essonne (2025)
 WITH ventes AS (
@@ -31,7 +32,8 @@ WITH ventes AS (
         COUNT(*) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS nb_logements,
         COUNT(*) FILTER (WHERE type_local LIKE 'Local%') AS nb_locaux_activite,
         MAX(type_local) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS type_local,
-        MAX(valeur_fonciere) AS prix
+        MAX(valeur_fonciere) AS prix,
+        SUM(surface_reelle_bati) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS surface
     FROM 'data/raw/91.csv.gz'
     WHERE nature_mutation = 'Vente'
     GROUP BY id_mutation
@@ -45,6 +47,8 @@ FROM ventes
 WHERE nb_logements = 1
   AND nb_locaux_activite = 0
   AND nb_communes = 1
+  AND surface > 0
+  AND prix / surface BETWEEN 500 AND 15000
 GROUP BY type_local;
 
 -- Prix médian au m² à Corbeil-Essonnes (2025)
@@ -72,6 +76,7 @@ WHERE nb_logements = 1
   AND nb_locaux_activite = 0
   AND nb_communes = 1
   AND surface > 0
+  AND prix / surface BETWEEN 500 AND 15000
   AND nom_commune = 'Corbeil-Essonnes'
 GROUP BY type_local;
 
@@ -115,6 +120,7 @@ WHERE nb_logements = 1
   AND nb_locaux_activite = 0
   AND nb_communes = 1
   AND surface > 0
+  AND prix / surface BETWEEN 500 AND 15000
 GROUP BY nom_commune
 HAVING COUNT(*) >= 30
 ORDER BY prix_m2_median ASC

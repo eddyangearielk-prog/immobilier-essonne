@@ -1,5 +1,6 @@
 -- Export corrigé : prix au m² par commune (ventes d'un seul logement, au moins 30 ventes)
 -- Exclut les ventes mixtes (logement + local commercial) et les ventes sur plusieurs communes
+-- Prix aberrants exclus : moins de 500 €/m² ou plus de 15 000 €/m²
 COPY (
     WITH ventes AS (
         SELECT
@@ -28,6 +29,7 @@ COPY (
       AND nb_locaux_activite = 0
       AND nb_communes = 1
       AND surface > 0
+      AND prix / surface BETWEEN 500 AND 15000
     GROUP BY nom_commune
     HAVING COUNT(*) >= 30
     ORDER BY prix_m2_median DESC
