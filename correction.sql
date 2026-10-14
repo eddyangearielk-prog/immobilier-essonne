@@ -31,5 +31,5 @@ WHERE nb_logements = 1
   AND prix / surface BETWEEN 500 AND 15000
 GROUP BY nom_commune
 HAVING COUNT(*) >= 30
-ORDER BY prix_m2_median DESC
+ORDER BY prix_m2_median DESC, nom_commune ASC
 LIMIT 10;

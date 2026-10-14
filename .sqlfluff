@@ -1,0 +1,5 @@
+[sqlfluff]
+dialect = duckdb
+# RF05 : DuckDB lit les fichiers directement (FROM 'data/raw/91.csv.gz'),
+# le chemin n'est pas un identifiant
+exclude_rules = RF05

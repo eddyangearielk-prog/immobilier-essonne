@@ -93,7 +93,7 @@ WHERE nature_mutation = 'Vente'
   AND surface_reelle_bati > 0
 GROUP BY nom_commune
 HAVING COUNT(DISTINCT id_mutation) >= 30
-ORDER BY prix_m2_median DESC
+ORDER BY prix_m2_median DESC, nom_commune ASC
 LIMIT 10;
 
 -- Top 10 des communes les moins chères au m² (au moins 30 ventes)
@@ -123,5 +123,5 @@ WHERE nb_logements = 1
   AND prix / surface BETWEEN 500 AND 15000
 GROUP BY nom_commune
 HAVING COUNT(*) >= 30
-ORDER BY prix_m2_median ASC
+ORDER BY prix_m2_median ASC, nom_commune ASC
 LIMIT 10;

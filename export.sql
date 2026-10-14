@@ -32,5 +32,5 @@ COPY (
       AND prix / surface BETWEEN 500 AND 15000
     GROUP BY nom_commune
     HAVING COUNT(*) >= 30
-    ORDER BY prix_m2_median DESC
-) TO 'resultats/prix_m2_communes.csv' (HEADER);
+    ORDER BY prix_m2_median DESC, nom_commune ASC
+) TO 'resultats/prix_m2_communes.csv';  -- DuckDB écrit l'en-tête par défaut
