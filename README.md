@@ -52,6 +52,8 @@ Puis ouvrir `immobilier-essonne.pbix` dans Power BI Desktop et cliquer sur **Act
 Données téléchargées le 15/10/2026 depuis le dossier `latest` de data.gouv.fr. Ce dossier ne conserve qu'environ cinq années et peut être révisé : un nouveau téléchargement peut donner des chiffres légèrement différents.
 
 ## Évolution 2021-2025 (tout le département)
+![Page Évolution du tableau de bord Power BI](images/evolution.png)
+
 
 | Année | Ventes | Prix médian au m² |
 |---|---|---|
