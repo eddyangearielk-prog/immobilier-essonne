@@ -47,5 +47,20 @@ duckdb < export.sql
 ```
 Puis ouvrir `immobilier-essonne.pbix` dans Power BI Desktop et cliquer sur **Actualiser**.
 
+## Analyse et recommandations
+
+**1. Un marché très contrasté.** Le prix médian au m² va de 1 209 € (Grigny) à 4 636 € (Verrières-le-Buisson), soit un écart de près de 1 à 4. La commune typique se situe à 3 199 €/m².
+
+**2. Un gradient nord-sud.** Le prix diminue nettement avec la distance à Paris : les communes les plus chères sont au nord, près de Paris et du plateau de Saclay. Ce lien n'explique pas tout : Grigny, proche de Paris, reste la commune la moins chère, ce qui renvoie à d'autres facteurs non mesurés dans ces données.
+
+**3. Corbeil-Essonnes, marché accessible et très actif.** Avec 2 614 €/m², elle figure parmi les communes les moins chères (79ᵉ sur 88), mais c'est le marché le plus actif du département (549 ventes), devant Évry-Courcouronnes et Massy.
+
+**Recommandations**
+- *Acheteur à budget limité* : cibler le centre et le sud-est du département (Corbeil-Essonnes, Évry-Courcouronnes, Ris-Orangis), où les prix sont bas et l'offre abondante.
+- *Professionnel de l'immobilier* : concentrer l'effort commercial sur les marchés les plus actifs (Corbeil-Essonnes, Évry-Courcouronnes, Massy).
+- *Collectivité* : suivre les écarts extrêmes, qui peuvent signaler des besoins en politique du logement.
+
+**Limites** : une seule année de données (2025) ; seules les ventes d'un logement unique sont retenues. Prochaine étape : l'évolution des prix 2021-2025.
+
 ## Source
 Données : [DVF géolocalisées, data.gouv.fr](https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres-geolocalisees/), Licence Ouverte 2.0
