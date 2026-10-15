@@ -1,4 +1,4 @@
-# Immobilier en Essonne : analyse des ventes 2025
+# Immobilier en Essonne : analyse des ventes 2021-2025
 
 Analyse du marché immobilier de l'Essonne (91) à partir des données publiques
 **DVF** (Demandes de Valeurs Foncières) publiées par la DGFiP sur data.gouv.fr.
@@ -11,7 +11,7 @@ Analyse du marché immobilier de l'Essonne (91) à partir des données publiques
 - **Linux (WSL2)**, **VS Code**, **Git / GitHub**
 
 ## Démarche
-1. **Ingestion** du fichier officiel DVF 2025 de l'Essonne
+1. **Ingestion** des fichiers officiels DVF 2021 à 2025 de l'Essonne
 2. **Contrôles qualité** : couverture temporelle, structure des données, valeurs aberrantes
 3. **Correction d'un biais** : certaines ventes regroupent des dizaines de logements
    (ex. 2 ventes de 80 logements à Igny), ce qui gonflait le prix au m² (12 497 €/m² au lieu de 4 602 €/m²).
@@ -33,19 +33,25 @@ Analyse du marché immobilier de l'Essonne (91) à partir des données publiques
 |---|---|
 | `exploration.sql` | Exploration et contrôles qualité |
 | `correction.sql` | Prix au m² corrigé (CTE) |
-| `export.sql` | Export des résultats pour Power BI |
-| `resultats/prix_m2_communes.csv` | Résultats par commune |
-| `immobilier-essonne.pbix` | Tableau de bord Power BI |
-| `theme-bleu.json` | Thème Power BI personnalisé |
+| `export.sql` | Export des résultats par commune (2025) pour Power BI |
 | `telecharger.sh` | Téléchargement automatisé des données 2021-2025 |
 | `evolution.sql` | Évolution des ventes et des prix 2021-2025 |
+| `export_evolution.sql` | Export de l'évolution annuelle pour Power BI |
+| `export_ventes.sql` | Export d'une ligne par vente nettoyée (2021-2025) pour Power BI |
+| `resultats/prix_m2_communes.csv` | Résultats par commune (2025) |
+| `resultats/evolution_2021_2025.csv` | Ventes et prix médian au m² par année |
+| `resultats/ventes_2021_2025.csv` | Table des ventes nettoyées (69 051 ventes) |
+| `immobilier-essonne.pbix` | Tableau de bord Power BI |
+| `theme-bleu.json` | Thème Power BI personnalisé |
 
 ## Reproduire l'analyse
 ```bash
-bash telecharger.sh      # télécharge 2021 à 2025 dans data/raw/<année>/
-duckdb < correction.sql  # classement des communes (2025)
-duckdb < export.sql      # export pour Power BI
-duckdb < evolution.sql   # évolution 2021-2025
+bash telecharger.sh            # télécharge 2021 à 2025 dans data/raw/<année>/
+duckdb < correction.sql        # classement des communes (2025)
+duckdb < evolution.sql         # évolution 2021-2025
+duckdb < export.sql            # exports pour Power BI
+duckdb < export_evolution.sql
+duckdb < export_ventes.sql
 ```
 Puis ouvrir `immobilier-essonne.pbix` dans Power BI Desktop et cliquer sur **Actualiser**.
 
@@ -66,7 +72,9 @@ Données téléchargées le 15/10/2026 depuis le dossier `latest` de data.gouv.f
 - Le nombre de ventes a chuté de 37 % entre 2021 et 2024, puis rebondit de 14 % en 2025.
 - Le prix médian a culminé en 2022, a reculé d'environ 9 % jusqu'en 2024, et se stabilise en 2025.
 - Ce retournement coïncide avec la hausse des taux d'intérêt, qui ne figure pas dans ces données.
+- Ces tendances concordent avec les chiffres des [Notaires du Grand Paris](https://notairesdugrandparis.fr/sites/default/files/2025-02/Dossier%20de%20presse%20T4%202024.pdf) : en Île-de-France, les ventes de logements anciens ont reculé de 36 % entre 2022 et 2024 (−34 % ici).
 - Chiffres vérifiés de façon indépendante (recalcul en Python) ; chaque année couvre bien janvier à décembre.
+- Prix courants, non corrigés de l'inflation (plus de 10 % entre 2021 et 2025) : en euros constants, la baisse est plus forte.
 
 *Ces chiffres portent sur tout le département : 12 385 ventes en 2025, contre 11 410 dans le classement, qui ne retient que les 88 communes ayant au moins 30 ventes.*
 
@@ -83,7 +91,11 @@ Données téléchargées le 15/10/2026 depuis le dossier `latest` de data.gouv.f
 - *Professionnel de l'immobilier* : concentrer l'effort commercial sur les marchés les plus actifs (Corbeil-Essonnes, Évry-Courcouronnes, Massy).
 - *Collectivité* : suivre les écarts extrêmes, qui peuvent signaler des besoins en politique du logement.
 
-**Limites** : une seule année de données (2025) ; seules les ventes d'un logement unique sont retenues ; les ventes de logements neufs sur plan (VEFA) sont exclues, l'analyse porte donc sur le marché de l'ancien. Prochaine étape : l'évolution des prix 2021-2025.
+**Limites**
+- Le classement des communes porte sur la seule année 2025 ; l'évolution 2021-2025 est calculée pour tout le département.
+- Seules les ventes d'un logement unique sont retenues ; les ventes de logements neufs sur plan (VEFA) sont exclues, l'analyse porte donc sur le marché de l'ancien.
+- Le prix au m² d'une maison inclut son terrain, et la médiane globale mélange maisons et appartements (de 46 % à 49 % de maisons selon l'année) : les courbes séparées par type sont plus fiables pour comparer les années.
+- Les prix sont en euros courants, non corrigés de l'inflation.
 
 ## Source
 Données : [DVF géolocalisées, data.gouv.fr](https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres-geolocalisees/), Licence Ouverte 2.0
