@@ -37,15 +37,36 @@ Analyse du marché immobilier de l'Essonne (91) à partir des données publiques
 | `resultats/prix_m2_communes.csv` | Résultats par commune |
 | `immobilier-essonne.pbix` | Tableau de bord Power BI |
 | `theme-bleu.json` | Thème Power BI personnalisé |
+| `telecharger.sh` | Téléchargement automatisé des données 2021-2025 |
+| `evolution.sql` | Évolution des ventes et des prix 2021-2025 |
 
 ## Reproduire l'analyse
 ```bash
-mkdir -p data/raw
-wget -P data/raw https://files.data.gouv.fr/geo-dvf/latest/csv/2025/departements/91.csv.gz
-duckdb < correction.sql
-duckdb < export.sql
+bash telecharger.sh      # télécharge 2021 à 2025 dans data/raw/<année>/
+duckdb < correction.sql  # classement des communes (2025)
+duckdb < export.sql      # export pour Power BI
+duckdb < evolution.sql   # évolution 2021-2025
 ```
 Puis ouvrir `immobilier-essonne.pbix` dans Power BI Desktop et cliquer sur **Actualiser**.
+
+Données téléchargées le 15/10/2026 depuis le dossier `latest` de data.gouv.fr. Ce dossier ne conserve qu'environ cinq années et peut être révisé : un nouveau téléchargement peut donner des chiffres légèrement différents.
+
+## Évolution 2021-2025 (tout le département)
+
+| Année | Ventes | Prix médian au m² |
+|---|---|---|
+| 2021 | 17 358 | 3 272 € |
+| 2022 | 16 418 | 3 428 € |
+| 2023 | 12 023 | 3 316 € |
+| 2024 | 10 867 | 3 125 € |
+| 2025 | 12 385 | 3 136 € |
+
+- Le nombre de ventes a chuté de 37 % entre 2021 et 2024, puis rebondit de 14 % en 2025.
+- Le prix médian a culminé en 2022, a reculé d'environ 9 % jusqu'en 2024, et se stabilise en 2025.
+- Ce retournement coïncide avec la hausse des taux d'intérêt, qui ne figure pas dans ces données.
+- Chiffres vérifiés de façon indépendante (recalcul en Python) ; chaque année couvre bien janvier à décembre.
+
+*Ces chiffres portent sur tout le département : 12 385 ventes en 2025, contre 11 410 dans le classement, qui ne retient que les 88 communes ayant au moins 30 ventes.*
 
 ## Analyse et recommandations
 

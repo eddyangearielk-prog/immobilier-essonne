@@ -13,7 +13,7 @@ WITH ventes AS (
         COUNT(*) FILTER (WHERE type_local LIKE 'Local%') AS nb_locaux_activite,
         MAX(valeur_fonciere) AS prix,
         SUM(surface_reelle_bati) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS surface
-    FROM 'data/raw/91.csv.gz'
+    FROM 'data/raw/2025/91.csv.gz'
     WHERE nature_mutation = 'Vente'
     GROUP BY id_mutation
 )

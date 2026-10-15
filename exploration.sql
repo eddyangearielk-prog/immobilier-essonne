@@ -3,19 +3,19 @@ SELECT
     COUNT(*) AS nb_lignes,
     MIN(date_mutation) AS premiere_vente,
     MAX(date_mutation) AS derniere_vente
-FROM 'data/raw/91.csv.gz';
+FROM 'data/raw/2025/91.csv.gz';
 
 -- Combien de vraies ventes ? (une vente = un id_mutation)
 SELECT
     COUNT(*) AS nb_lignes,
     COUNT(DISTINCT id_mutation) AS nb_ventes
-FROM 'data/raw/91.csv.gz';
+FROM 'data/raw/2025/91.csv.gz';
 
 -- Quels types de biens dans les ventes ?
 SELECT
     type_local,
     COUNT(*) AS nb_lignes
-FROM 'data/raw/91.csv.gz'
+FROM 'data/raw/2025/91.csv.gz'
 GROUP BY type_local
 ORDER BY nb_lignes DESC;
 
@@ -34,7 +34,7 @@ WITH ventes AS (
         MAX(type_local) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS type_local,
         MAX(valeur_fonciere) AS prix,
         SUM(surface_reelle_bati) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS surface
-    FROM 'data/raw/91.csv.gz'
+    FROM 'data/raw/2025/91.csv.gz'
     WHERE nature_mutation = 'Vente'
     GROUP BY id_mutation
 )
@@ -62,7 +62,7 @@ WITH ventes AS (
         MAX(type_local) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS type_local,
         MAX(valeur_fonciere) AS prix,
         SUM(surface_reelle_bati) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS surface
-    FROM 'data/raw/91.csv.gz'
+    FROM 'data/raw/2025/91.csv.gz'
     WHERE nature_mutation = 'Vente'
     GROUP BY id_mutation
 )
@@ -87,7 +87,7 @@ SELECT
     nom_commune,
     COUNT(DISTINCT id_mutation) AS nb_ventes,
     ROUND(MEDIAN(valeur_fonciere / surface_reelle_bati)) AS prix_m2_median
-FROM 'data/raw/91.csv.gz'
+FROM 'data/raw/2025/91.csv.gz'
 WHERE nature_mutation = 'Vente'
   AND type_local IN ('Maison', 'Appartement')
   AND surface_reelle_bati > 0
@@ -106,7 +106,7 @@ WITH ventes AS (
         COUNT(*) FILTER (WHERE type_local LIKE 'Local%') AS nb_locaux_activite,
         MAX(valeur_fonciere) AS prix,
         SUM(surface_reelle_bati) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS surface
-    FROM 'data/raw/91.csv.gz'
+    FROM 'data/raw/2025/91.csv.gz'
     WHERE nature_mutation = 'Vente'
     GROUP BY id_mutation
 )

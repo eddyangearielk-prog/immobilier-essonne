@@ -13,7 +13,7 @@ COPY (
             SUM(surface_reelle_bati) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS surface,
             MAX(latitude) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS latitude,
             MAX(longitude) FILTER (WHERE type_local IN ('Maison', 'Appartement')) AS longitude
-        FROM 'data/raw/91.csv.gz'
+        FROM 'data/raw/2025/91.csv.gz'
         WHERE nature_mutation = 'Vente'
         GROUP BY id_mutation
     )
