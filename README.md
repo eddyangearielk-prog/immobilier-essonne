@@ -60,7 +60,7 @@ Puis ouvrir `immobilier-essonne.pbix` dans Power BI Desktop et cliquer sur **Act
 - *Professionnel de l'immobilier* : concentrer l'effort commercial sur les marchés les plus actifs (Corbeil-Essonnes, Évry-Courcouronnes, Massy).
 - *Collectivité* : suivre les écarts extrêmes, qui peuvent signaler des besoins en politique du logement.
 
-**Limites** : une seule année de données (2025) ; seules les ventes d'un logement unique sont retenues. Prochaine étape : l'évolution des prix 2021-2025.
+**Limites** : une seule année de données (2025) ; seules les ventes d'un logement unique sont retenues ; les ventes de logements neufs sur plan (VEFA) sont exclues, l'analyse porte donc sur le marché de l'ancien. Prochaine étape : l'évolution des prix 2021-2025.
 
 ## Source
 Données : [DVF géolocalisées, data.gouv.fr](https://www.data.gouv.fr/fr/datasets/demandes-de-valeurs-foncieres-geolocalisees/), Licence Ouverte 2.0
